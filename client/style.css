@@ -1,0 +1,237 @@
+/* ========== Base Reset ========== */
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+  padding: 20px;
+  background-color: #fdfaf6;
+  color: #333;
+}
+
+/* ========== Layout Containers ========== */
+.container {
+  padding-top: 90px;
+}
+
+/* ========== Header ========== */
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: white;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  padding: 0 20px;
+}
+
+.logo {
+  position: absolute;
+  top: -15px;
+  left: 20px;
+  height: 100px;
+  width: 100px;
+  object-fit: contain;
+}
+
+h1 {
+  margin: 0;
+  font-size: 24px;
+  color: #5e412f;
+}
+
+/* ========== Upload Section ========== */
+.upload-section {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.file-upload-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#imageInput {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #fff;
+}
+
+/* ========== Instruction Cards ========== */
+.instruction {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 20px;
+  flex-wrap: wrap;
+}
+
+.card {
+  flex: 1;
+  min-width: 200px;
+  max-width: 33%;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 15px;
+  border-radius: 10px;
+  text-align: center;
+  background-color: #fff;
+}
+
+.instruction-img {
+  width: 100%;
+  height: auto;
+  margin-top: 10px;
+}
+
+/* ========== Preview Image ========== */
+#previewImage {
+  max-width: 100%;
+  max-height: 60vh;
+  display: block;
+  margin: 1rem auto;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  object-fit: contain;
+}
+
+/* ========== Color Buttons + Eyedropper ========== */
+#colorButtons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-top: 1.5rem;
+}
+
+.color-btn {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background-color: #f4f4f4;
+  border: 2px solid #ccc;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.color-btn:hover {
+  background-color: #e6e6e6;
+  transform: scale(1.1);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.15);
+}
+
+.icon-button-img {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+}
+
+/* ========== Buttons Wrapper ========== */
+.Buttons {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+/* ========== Results Section ========== */
+#results {
+  margin-top: 30px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+}
+
+.laminate-card {
+  background: #fff;
+  border-radius: 10px;
+  padding: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  max-width: 150px;
+}
+
+.laminate-card img {
+  max-width: 100%;
+  border-radius: 8px;
+}
+
+/* ========== Similarity Bar ========== */
+.similarity-bar-wrapper {
+  width: 100%;
+  background-color: #ddd;
+  height: 18px;
+  border-radius: 9px;
+  overflow: hidden;
+  margin: 8px 0;
+  position: relative;
+}
+
+.similarity-bar {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 8px;
+  color: white;
+  font-size: 12px;
+  font-weight: bold;
+  border-radius: 9px 0 0 9px;
+  transition: width 0.4s ease;
+  box-shadow: inset 0 0 3px rgba(0,0,0,0.2);
+}
+
+.similarity-label {
+  text-shadow: 0 0 3px rgba(0, 0, 0, 0.5);
+}
+
+/* ========== Responsive Design ========== */
+@media (max-width: 768px) {
+  .instruction {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .card {
+    max-width: 90%;
+  }
+
+  .Buttons {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .header h1 {
+    font-size: 18px;
+  }
+
+  .logo {
+    height: 60px;
+    width: 60px;
+    margin-top: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  #imageInput {
+    width: 100%;
+  }
+
+  .color-btn {
+    width: 50px;
+    height: 50px;
+  }
+
+  .similarity-bar {
+    font-size: 10px;
+  }
+}

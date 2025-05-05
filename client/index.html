@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Laminate Color Picker</title>
+    <link rel="stylesheet" href="style.css" />
+    <style>
+      /* Hide preview initially */
+      #previewContainer {
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <header class="header">
+        <div class="logo-title">
+          <img src="images/DURIAN-LOGO1.png" alt="Logo" class="logo" />
+          <h1>Laminate Color Picker</h1>
+        </div>
+      </header>
+
+      <section class="upload-section">
+        <center>Upload your image here.</center>
+        <div class="file-upload-wrapper">
+          <input type="file" id="imageInput" />
+        </div>
+      </section>
+
+      <!-- Instruction Section -->
+      <section id="instructionSection" class="instruction">
+        <div id="card_1" class="card">
+          <h4>Step-1<br />Select and Upload the image File</h4>
+          <img class="instruction-img" src="images/select photo.png" />
+        </div>
+        <div id="card_2" class="card">
+          <h4>Step-2<br />Pick color in image</h4>
+          <img class="instruction-img" src="images/pick color.png" />
+        </div>
+        <div id="card_3" class="card">
+          <h4>Step-3<br />Find laminates nearest to your color</h4>
+          <img class="instruction-img" src="images/find laminates.png" />
+        </div>
+      </section>
+
+      <!-- Preview Section -->
+      <section id="previewContainer" class="preview" style="display: none;">
+        <img id="previewImage" />
+        <div class="Buttons">
+          <div id="colorButtons" class="color-buttons All-buttons"></div>
+          <div class="eyedropper-row All-buttons">
+            <button id="eyedropperButton" class="color-btn" title="Pick a color manually">
+              <img src="images/pick me.png" alt="Pick Color" class="icon-button-img" />
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Results -->
+      <div id="results"></div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/color-thief/2.6.0/color-thief.umd.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>
