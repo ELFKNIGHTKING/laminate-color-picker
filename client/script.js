@@ -83,10 +83,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
     try {
       const response = await fetch(
-        `http://localhost:3001/api/laminates/similar?color=${encodeURIComponent(
+        `https://laminate-api.onrender.com/api/laminates/similar?color=${encodeURIComponent(
           hex
         )}`
       );
+      
 
       if (!response.ok) {
         throw new Error(`Server returned status ${response.status}`);
