@@ -6,7 +6,9 @@ const { Pool } = require("pg");
 const app = express();
 const port = 3001;
 
-app.use(cors());
+app.use(cors({
+  origin: 'https://laminate-color-picker.onrender.com'
+}));
 app.use(express.json());
 
 // ✅ Serve images from the "laminates" folder
