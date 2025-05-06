@@ -115,3 +115,13 @@ app.get("/", (req, res) => {
 app.listen(port, () => {
   console.log(`Server is running at http://localhost:${port}`);
 });
+
+app.get("/api/db-check", async (req, res) => {
+  try {
+    const result = await pool.query("SELECT current_database();");
+    res.json({ connected_database: result.rows[0].current_database });
+  } catch (err) {
+    console.error("Database check failed:", err);
+    res.status(500).json({ error: "Database check failed" });
+  }
+});
