@@ -114,7 +114,7 @@ document.addEventListener("DOMContentLoaded", () => {
       card.className = "laminate-card";
 
       const img = document.createElement("img");
-      img.src = `http://localhost:3001${laminate.image_path}`;
+      img.src = `https://laminate-api.onrender.com${laminate.image_path}`;
       img.alt = "Laminate";
       img.className = "laminate-img";
 
