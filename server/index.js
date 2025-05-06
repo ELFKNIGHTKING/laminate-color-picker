@@ -2,6 +2,8 @@ const express = require("express");
 const cors = require("cors");
 const path = require("path"); // Added for handling static paths
 const { Pool } = require("pg");
+require("dotenv").config();
+
 
 const app = express();
 const port = 3001;
@@ -16,12 +18,12 @@ app.use("/laminates", express.static(path.join(__dirname, "laminates")));
 
 // PostgreSQL connection
 const pool = new Pool({
-  user: "postgres",
-  host: "localhost",
-  database: "laminate_picker",
-  password: "Parth@123",
-  port: 5432,
+  connectionString: process.env.DATABASE_URL,
+  ssl: {
+    rejectUnauthorized: false
+  }
 });
+
 
 // POST: Upload a laminate (image path and hex color)
 app.post("/api/laminates", async (req, res) => {
