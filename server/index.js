@@ -89,7 +89,7 @@ app.get("/api/laminates/similar", async (req, res) => {
   }
 
   try {
-    const result = await pool.query("SELECT * FROM laminates");
+    const result = await pool.query("SELECT * FROM public.laminates");
     const allLaminates = result.rows;
 
     const similarLaminates = allLaminates
