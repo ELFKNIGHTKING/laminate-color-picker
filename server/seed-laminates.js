@@ -2,17 +2,15 @@ const fs = require('fs');
 const path = require('path');
 const getColors = require('get-image-colors');
 const { Pool } = require('pg');
+require('dotenv').config();
 
-// PostgreSQL connection
+// Use DATABASE_URL from environment or fallback to local config
 const pool = new Pool({
-  user: "postgres",
-  host: "localhost",
-  database: "laminate_picker",
-  password: "Parth@123",
-  port: 5432,
+  connectionString: process.env.DATABASE_URL || "postgres://postgres:Parth@123@localhost:5432/laminate_picker",
+  ssl: process.env.DATABASE_URL ? { rejectUnauthorized: false } : false,
 });
 
-// Folder with laminate images
+// Folder containing laminate images
 const laminatesFolder = path.join(__dirname, '..', 'client', 'laminates');
 
 async function seedLaminates() {
@@ -25,9 +23,8 @@ async function seedLaminates() {
     const imagePath = path.join(laminatesFolder, file);
     try {
       const colors = await getColors(imagePath);
-      const dominant = colors[0].hex(); // Most dominant color
+      const dominant = colors[0].hex();
 
-      // ✅ Insert full relative path like /laminates/81401.jpg
       await pool.query(
         'INSERT INTO laminates (image_path, hex_color) VALUES ($1, $2)',
         [`/laminates/${file}`, dominant]
@@ -35,7 +32,7 @@ async function seedLaminates() {
 
       console.log(`✅ Inserted: ${file} → ${dominant}`);
     } catch (err) {
-      console.error(`❌ Failed to process ${file}:`, err);
+      console.error(`❌ Failed to process ${file}:`, err.message);
     }
   }
 
