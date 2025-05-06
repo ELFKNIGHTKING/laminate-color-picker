@@ -8,7 +8,11 @@ require("dotenv").config();
 const app = express();
 const port = 3001;
 
-app.use(cors()); // Allow all origins temporarily
+app.use(cors({
+  origin: "https://laminate-color-picker.onrender.com", // ✅ allow frontend
+  methods: ["GET", "POST"], // ✅ allow necessary methods
+  credentials: true
+}));
 app.use(express.json());
 
 // ✅ Serve images from the "laminates" folder
