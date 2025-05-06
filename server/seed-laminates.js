@@ -1,17 +1,17 @@
+require('dotenv').config();
 const fs = require('fs');
 const path = require('path');
 const getColors = require('get-image-colors');
 const { Pool } = require('pg');
-require('dotenv').config();
 
-// Use DATABASE_URL from environment or fallback to local config
+// Create the pool with correct config
 const pool = new Pool({
-  connectionString: process.env.DATABASE_URL || "postgres://postgres:Parth@123@localhost:5432/laminate_picker",
-  ssl: process.env.DATABASE_URL ? { rejectUnauthorized: false } : false,
+  connectionString: process.env.DATABASE_URL,
+  ssl: false  // <- IMPORTANT: Disable SSL if Render DB doesn't support it
 });
 
-// Folder containing laminate images
-const laminatesFolder = path.join(__dirname, '..', 'client', 'laminates');
+// Adjust path to point to public/laminates folder
+const laminatesFolder = path.join(__dirname, '..', 'server', 'laminates');
 
 async function seedLaminates() {
   const files = fs.readdirSync(laminatesFolder);
