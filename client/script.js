@@ -28,7 +28,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const result = await eyeDropper.open();
             const pickedColor = result.sRGBHex;
             console.log("User picked:", pickedColor);
-            handleColorClick(pickedColor); // trigger same function as other buttons
+            handleColorClick(pickedColor);
           } catch (err) {
             console.error("Eyedropper cancelled or failed:", err);
           }
@@ -53,13 +53,12 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("imageInput").addEventListener("change", function () {
     const instructionSection = document.getElementById("instructionSection");
     const previewContainer = document.getElementById("previewContainer");
-  
+
     if (this.files && this.files.length > 0) {
-      instructionSection.style.display = "none";      // Hide instructions
-      previewContainer.style.display = "block";       // Show preview section
+      instructionSection.style.display = "none";
+      previewContainer.style.display = "block";
     }
   });
-  
 
   function rgbToHex(r, g, b) {
     return (
@@ -83,11 +82,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     try {
       const response = await fetch(
-        `https://laminate-api.onrender.com/api/laminates/similar?color=${encodeURIComponent(
-          hex
-        )}`
+        `https://laminate-api.onrender.com/api/laminates/similar?color=${encodeURIComponent(hex)}`
       );
-      
 
       if (!response.ok) {
         throw new Error(`Server returned status ${response.status}`);
@@ -120,16 +116,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const info = document.createElement("div");
       info.innerHTML = `
-  <p><strong>Hex:</strong> ${laminate.hex_color}</p>
-  <p><strong>Similarity:</strong> ${laminate.similarity}%</p>
-  <div class="similarity-bar-wrapper">
-    <div class="similarity-bar" style="background-color: ${laminate.hex_color}; width: ${laminate.similarity}%;">
-      <span class="similarity-label">${laminate.similarity}%</span>
-    </div>
-  </div>
-`;
-
-      
+        <p><strong>Hex:</strong> ${laminate.hex_color}</p>
+        <p><strong>Similarity:</strong> ${laminate.similarity}%</p>
+        <div class="similarity-bar-wrapper">
+          <div class="similarity-bar" style="background-color: ${laminate.hex_color}; width: ${laminate.similarity}%;">
+            <span class="similarity-label">${laminate.similarity}%</span>
+          </div>
+        </div>
+      `;
 
       card.appendChild(img);
       card.appendChild(info);
