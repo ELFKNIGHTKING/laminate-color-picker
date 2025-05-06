@@ -102,9 +102,10 @@ app.get("/api/laminates/similar", async (req, res) => {
 
     res.json(similarLaminates);
   } catch (err) {
-    console.error("Error finding similar laminates:", err);
-    res.status(500).json({ error: "Database query failed" });
+    console.error("🔥 Detailed DB Error:", err); // Log full error
+    res.status(500).json({ error: err.message }); // Show actual DB error
   }
+  
 });
 
 // Test endpoint
