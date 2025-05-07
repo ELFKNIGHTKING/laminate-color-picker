@@ -7,7 +7,9 @@ const { Pool } = require('pg');
 // ✅ Correct SSL config for Render
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
-  ssl: false
+  ssl: {
+    rejectUnauthorized: false
+  }
 });
 
 // ✅ Adjust path to point to the right laminates folder
