@@ -4,13 +4,15 @@ const path = require('path');
 const getColors = require('get-image-colors');
 const { Pool } = require('pg');
 
-// Create the pool with correct config
+// ✅ Correct SSL config for Render
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
-  ssl: false  // <- IMPORTANT: Disable SSL if Render DB doesn't support it
+  ssl: {
+    rejectUnauthorized: false
+  }
 });
 
-// Adjust path to point to public/laminates folder
+// ✅ Adjust path to point to the right laminates folder
 const laminatesFolder = path.join(__dirname, '..', 'server', 'laminates');
 
 async function seedLaminates() {
