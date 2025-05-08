@@ -1,18 +1,13 @@
-/* ========== Base Reset ========== */
+/* General Body Styles */
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   margin: 0;
-  padding: 20px;
+  padding: 80px 20px 20px; /* Padding to accommodate fixed header */
   background-color: #fdfaf6;
   color: #333;
 }
 
-/* ========== Layout Containers ========== */
-.container {
-  padding-top: 90px;
-}
-
-/* ========== Header ========== */
+/* Header Styles */
 .header {
   position: fixed;
   top: 0;
@@ -30,7 +25,6 @@ body {
 
 .logo {
   position: absolute;
-  top: -15px;
   left: 20px;
   height: 100px;
   width: 100px;
@@ -39,30 +33,48 @@ body {
 
 h1 {
   margin: 0;
-  font-size: 24px;
   color: #5e412f;
+  font-size: 24px;
 }
 
-/* ========== Upload Section ========== */
+/* Upload Section */
 .upload-section {
+  margin-top: 12px;
   text-align: center;
-  margin-bottom: 20px;
 }
 
-.file-upload-wrapper {
+#uploadForm {
   display: flex;
   justify-content: center;
   align-items: center;
+  gap: 12px;
+  margin-bottom: 30px;
+  flex-wrap: wrap;
 }
 
-#imageInput {
+#uploadForm input[type="file"] {
   padding: 10px;
-  border: 1px solid #ccc;
+  border: 1px solid #ddd;
+  background: #fff;
   border-radius: 8px;
-  background-color: #fff;
 }
 
-/* ========== Instruction Cards ========== */
+#uploadForm button {
+  padding: 10px 20px;
+  background-color: #a2836e;
+  border: none;
+  border-radius: 8px;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+#uploadForm button:hover {
+  background-color: #8a6b55;
+}
+
+/* Instruction Section */
 .instruction {
   display: flex;
   justify-content: space-between;
@@ -88,18 +100,45 @@ h1 {
   margin-top: 10px;
 }
 
-/* ========== Preview Image ========== */
+/* Preview Section - Centering and Image Size Limitations */
+#previewContainer {
+  display: none; /* Hide initially */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100vh;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: rgba(255, 255, 255, 0.9);
+  padding: 20px;
+  box-sizing: border-box;
+  overflow: auto;
+}
+
 #previewImage {
-  max-width: 100%;
+  max-width: 80%;
   max-height: 60vh;
   display: block;
   margin: 1rem auto;
   border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   object-fit: contain;
 }
 
-/* ========== Color Buttons ========== */
+/* Canvas Wrapper Styling */
+.canvas-wrapper {
+  display: inline-block;
+  position: relative;
+  padding: 10px;
+  border-radius: 10px;
+  background-color: #fff;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  margin-top: 20px;
+}
+
+/* Color Buttons */
 #colorButtons {
   display: flex;
   justify-content: center;
@@ -109,115 +148,72 @@ h1 {
 }
 
 .color-btn {
-  width: 60px;
+  width: 100px;
   height: 60px;
-  border-radius: 50%;
+  border-radius: 12px;
+  border: 4px solid #e0e0e0;
   background-color: #f4f4f4;
-  border: 2px solid #ccc;
   cursor: pointer;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
 .color-btn:hover {
-  background-color: #e6e6e6;
   transform: scale(1.1);
   box-shadow: 0 6px 14px rgba(0, 0, 0, 0.15);
 }
 
-/* ========== Buttons Wrapper ========== */
-.Buttons {
-  display: flex;
-  gap: 20px;
-  align-items: center;
-  justify-content: center;
-  flex-wrap: wrap;
+/* Eyedropper Button */
+#eyedropperBtn.color-btn {
+  background-color: #f4f4f4;
+  color: #333;
+  border: 1px solid #ccc;
+  border-radius: 100%;
 }
 
-/* ========== Results Section ========== */
+#eyedropperBtn.color-btn:hover {
+  background-color: #e6e6e6;
+}
+
+/* Results Section */
 #results {
-  margin-top: 30px;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
   gap: 20px;
 }
 
 .laminate-card {
-  background: #fff;
-  border-radius: 10px;
-  padding: 10px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  max-width: 150px;
+  background-color: #fff;
+  border-radius: 16px;
+  padding: 15px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  transition: transform 0.2s ease;
+}
+
+.laminate-card:hover {
+  transform: translateY(-5px);
 }
 
 .laminate-card img {
-  max-width: 100%;
-  border-radius: 8px;
-}
-
-/* ========== Similarity Bar ========== */
-.similarity-bar-wrapper {
   width: 100%;
-  background-color: #ddd;
-  height: 18px;
-  border-radius: 9px;
-  overflow: hidden;
-  margin: 8px 0;
-  position: relative;
+  border-radius: 12px;
+  margin-bottom: 10px;
+  object-fit: cover;
 }
 
-.similarity-bar {
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  padding-right: 8px;
-  color: white;
-  font-size: 12px;
+.laminate-card .info {
+  font-size: 14px;
+  color: #555;
+}
+
+.laminate-card .highlight {
+  color: #a2836e;
   font-weight: bold;
-  border-radius: 9px 0 0 9px;
-  transition: width 0.4s ease;
-  box-shadow: inset 0 0 3px rgba(0, 0, 0, 0.2);
 }
 
-.similarity-label {
-  text-shadow: 0 0 3px rgba(0, 0, 0, 0.5);
-}
-
-/* ========== Canvas Styling ========== */
-#colorCanvas {
-  display: block;
-  margin: 20px auto;
-  max-width: 100%;
-  border: 2px dashed #aaa;
-  border-radius: 10px;
-  cursor: crosshair;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  transition: box-shadow 0.3s ease, border-color 0.3s ease;
-}
-
-#colorCanvas:hover {
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
-  border-color: #888;
-}
-
-/* ========== Canvas Wrapper Styling ========== */
-.canvas-wrapper {
-  display: inline-block;
-  position: relative;
-  padding: 10px;
-  border-radius: 10px;
-  background-color: #fff;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-}
-
-
-/* ========== Responsive Design ========== */
-@media (max-width: 768px) {
+/* Responsive Design */
+@media (max-width: 1024px) {
   .instruction {
     flex-direction: column;
     align-items: center;
@@ -227,33 +223,75 @@ h1 {
     max-width: 90%;
   }
 
+  .logo {
+    height: 70px;
+    width: 70px;
+    margin-top: -20px;
+  }
+
+  h1 {
+    font-size: 20px;
+  }
+
+  .instruction-img {
+    height: auto;
+    max-height: 300px;
+  }
+
   .Buttons {
     flex-direction: column;
     gap: 10px;
   }
 
-  .header h1 {
-    font-size: 18px;
+  .color-btn {
+    width: 80px;
+    height: 50px;
+  }
+}
+
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 10px;
   }
 
   .logo {
+    margin: 0 auto;
     height: 60px;
     width: 60px;
-    margin-top: 20px;
+  }
+
+  h1 {
+    font-size: 1.2rem;
+  }
+
+  .instruction-img {
+    max-height: 250px;
+  }
+
+  .laminate-card img {
+    height: auto;
   }
 }
 
 @media (max-width: 480px) {
-  #imageInput {
-    width: 100%;
+  #uploadForm input[type="file"],
+  #uploadForm button {
+    width: 90%;
   }
 
   .color-btn {
-    width: 50px;
-    height: 50px;
+    width: 60px;
+    height: 40px;
   }
 
-  .similarity-bar {
-    font-size: 10px;
+  .laminate-card {
+    font-size: 12px;
+  }
+
+  .laminate-card .info {
+    font-size: 12px;
   }
 }
