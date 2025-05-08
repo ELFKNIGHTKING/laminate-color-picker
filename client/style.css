@@ -205,6 +205,16 @@ h1 {
   border-color: #888;
 }
 
+/* ========== Canvas Wrapper Styling ========== */
+.canvas-wrapper {
+  display: inline-block;
+  position: relative;
+  padding: 10px;
+  border-radius: 10px;
+  background-color: #fff;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
 
 /* ========== Responsive Design ========== */
 @media (max-width: 768px) {
