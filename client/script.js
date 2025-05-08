@@ -1,6 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
   const imageInput = document.getElementById("imageInput");
-  const previewImage = document.getElementById("previewImage");
+  const canvas = document.getElementById("canvas");
+  const ctx = canvas.getContext("2d");
   const colorButtonsContainer = document.getElementById("colorButtons");
   const resultsContainer = document.getElementById("results");
 
@@ -8,35 +9,15 @@ document.addEventListener("DOMContentLoaded", () => {
     const file = event.target.files[0];
     if (!file) return;
 
-    const reader = new FileReader();
-    reader.onload = function (e) {
-      previewImage.src = e.target.result;
-    };
-    reader.readAsDataURL(file);
+    const img = new Image();
+    img.onload = async () => {
+      canvas.width = img.width;
+      canvas.height = img.height;
+      ctx.drawImage(img, 0, 0);
 
-    previewImage.onload = async () => {
       const colorThief = new ColorThief();
-      const dominantColors = colorThief.getPalette(previewImage, 4);
+      const dominantColors = colorThief.getPalette(img, 4);
       colorButtonsContainer.innerHTML = "";
-
-      const eyedropperBtn = document.getElementById("eyedropperButton");
-
-      if ("EyeDropper" in window) {
-        eyedropperBtn.addEventListener("click", async () => {
-          const eyeDropper = new EyeDropper();
-          try {
-            const result = await eyeDropper.open();
-            const pickedColor = result.sRGBHex;
-            console.log("User picked:", pickedColor);
-            handleColorClick(pickedColor);
-          } catch (err) {
-            console.error("Eyedropper cancelled or failed:", err);
-          }
-        });
-      } else {
-        eyedropperBtn.disabled = true;
-        eyedropperBtn.title = "Eyedropper not supported in this browser";
-      }
 
       dominantColors.forEach((rgbArray) => {
         const hex = rgbToHex(rgbArray[0], rgbArray[1], rgbArray[2]);
@@ -48,6 +29,16 @@ document.addEventListener("DOMContentLoaded", () => {
         colorButtonsContainer.appendChild(btn);
       });
     };
+    img.src = URL.createObjectURL(file);
+  });
+
+  canvas.addEventListener("click", function (event) {
+    const rect = canvas.getBoundingClientRect();
+    const x = event.clientX - rect.left;
+    const y = event.clientY - rect.top;
+    const pixel = ctx.getImageData(x, y, 1, 1).data;
+    const hex = rgbToHex(pixel[0], pixel[1], pixel[2]);
+    handleColorClick(hex);
   });
 
   document.getElementById("imageInput").addEventListener("change", function () {
@@ -82,7 +73,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     try {
       const response = await fetch(
-        `https://laminate-api.onrender.com/api/laminates/similar?color=${encodeURIComponent(hex)}`
+        `https://laminate-api.onrender.com/api/laminates/similar?color=${encodeURIComponent(
+          hex
+        )}`
       );
 
       if (!response.ok) {
@@ -119,9 +112,7 @@ document.addEventListener("DOMContentLoaded", () => {
         <p><strong>Hex:</strong> ${laminate.hex_color}</p>
         <p><strong>Similarity:</strong> ${laminate.similarity}%</p>
         <div class="similarity-bar-wrapper">
-          <div class="similarity-bar" style="background-color: ${laminate.hex_color}; width: ${laminate.similarity}%;">
-            <span class="similarity-label">${laminate.similarity}%</span>
-          </div>
+          <div class="similarity-bar" style="background-color: ${laminate.hex_color}; width: ${laminate.similarity}%;"><span class="similarity-label">${laminate.similarity}%</span></div>
         </div>
       `;
 
