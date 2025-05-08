@@ -8,6 +8,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
   let pickMode = false;
 
+  // Create the color preview box
+  const colorPreview = document.createElement('div');
+  colorPreview.id = 'colorPreview';
+  colorPreview.style.display = 'none';
+  document.body.appendChild(colorPreview);
+
   imageInput.addEventListener("change", async (event) => {
     const file = event.target.files[0];
     if (!file) return;
@@ -39,6 +45,33 @@ document.addEventListener("DOMContentLoaded", () => {
     pickMode = true;
     pickModeBtn.textContent = "Tap on image to pick a color";
     pickModeBtn.disabled = true;
+
+    canvas.classList.add("cursor-active");
+  });
+
+  // Function to update the color preview box on hover (only in pick mode)
+  function updateColorPreview(event) {
+    if (!pickMode) return;
+
+    const canvasRect = canvas.getBoundingClientRect();
+    const mouseX = event.clientX - canvasRect.left;
+    const mouseY = event.clientY - canvasRect.top;
+
+    const imageData = ctx.getImageData(mouseX, mouseY, 1, 1);
+    const pixel = imageData.data;
+
+    const rgba = `rgba(${pixel[0]}, ${pixel[1]}, ${pixel[2]}, ${pixel[3] / 255})`;
+    colorPreview.style.backgroundColor = rgba;
+
+    colorPreview.style.left = `${event.pageX + 10}px`;
+    colorPreview.style.top = `${event.pageY + 10}px`;
+    colorPreview.style.display = 'block';
+  }
+
+  canvas.addEventListener("mousemove", updateColorPreview);
+
+  canvas.addEventListener("mouseleave", () => {
+    colorPreview.style.display = 'none';
   });
 
   canvas.addEventListener("click", function (event) {
@@ -52,8 +85,10 @@ document.addEventListener("DOMContentLoaded", () => {
     handleColorClick(hex);
 
     pickMode = false;
-    pickModeBtn.textContent = "Pick Color from Image";
+    pickModeBtn.innerHTML = '<img src="images/pick me.png" alt="Pick Color" class="button-icon" />';
     pickModeBtn.disabled = false;
+    canvas.classList.remove("cursor-active");
+    colorPreview.style.display = 'none';
   });
 
   document.getElementById("imageInput").addEventListener("change", function () {

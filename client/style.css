@@ -61,7 +61,10 @@ h1 {
   border-radius: 8px;
   background-color: #fff;
 }
-
+center{
+  margin-top: -10px;
+  margin-bottom: 10px;
+}
 /* ========== Instruction Cards ========== */
 .instruction {
   display: flex;
@@ -89,7 +92,7 @@ h1 {
 }
 
 /* ========== Preview Image ========== */
-#previewImage {
+canvas{
   max-width: 100%;
   max-height: 60vh;
   display: block;
@@ -127,7 +130,6 @@ h1 {
   transform: scale(1.1);
   box-shadow: 0 6px 14px rgba(0, 0, 0, 0.15);
 }
-
 /* ========== Buttons Wrapper ========== */
 .Buttons {
   display: flex;
@@ -136,6 +138,14 @@ h1 {
   justify-content: center;
   flex-wrap: wrap;
 }
+
+/* Button Image Styling */
+button.color-btn img.button-icon {
+  width: 30px; /* adjust the size as needed */
+  height: 30px;
+  object-fit: contain; /* Ensures the image is not distorted */
+}
+
 
 /* ========== Results Section ========== */
 #results {
@@ -186,6 +196,21 @@ h1 {
 
 .similarity-label {
   text-shadow: 0 0 3px rgba(0, 0, 0, 0.5);
+}
+
+/* Style for the color preview when hovering over the canvas */
+#colorPreview {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  background-color: transparent;
+  border: 1px solid #ccc;
+  border-radius: 50%;
+  pointer-events: none; /* Prevents the color preview from interfering with mouse events */
+  display: none;
+}
+.cursor-active {
+  cursor: crosshair;  /* You can change this to any cursor you prefer */
 }
 
 /* ========== Responsive Design ========== */
