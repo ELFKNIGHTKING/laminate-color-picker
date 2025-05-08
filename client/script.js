@@ -19,20 +19,19 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!file) return;
 
     const img = new Image();
-
-    // Fix CORS issues when reading pixel data
-    img.crossOrigin = "Anonymous";
+    img.crossOrigin = "Anonymous"; // Avoid CORS issues
 
     img.onload = async () => {
-      // Set canvas size
       canvas.width = img.width;
       canvas.height = img.height;
 
-      // Clear canvas before drawing
+      // Disable image smoothing to avoid blurring
+      ctx.imageSmoothingEnabled = false;
+
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       ctx.drawImage(img, 0, 0);
 
-      // Force canvas initialization to avoid transparency issues
+      // Force canvas initialization
       ctx.getImageData(0, 0, 1, 1);
 
       const colorThief = new ColorThief();
@@ -50,7 +49,6 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     };
 
-    // Load the image from the file input
     img.src = URL.createObjectURL(file);
   });
 
@@ -58,26 +56,23 @@ document.addEventListener("DOMContentLoaded", () => {
     pickMode = true;
     pickModeBtn.textContent = "Tap on image to pick a color";
     pickModeBtn.disabled = true;
-
     canvas.classList.add("cursor-active");
   });
 
-  // Function to update the color preview box on hover (only in pick mode)
   function updateColorPreview(event) {
     if (!pickMode) return;
 
-    const canvasRect = canvas.getBoundingClientRect();
-    const mouseX = event.clientX - canvasRect.left;
-    const mouseY = event.clientY - canvasRect.top;
+    const rect = canvas.getBoundingClientRect();
+    const scaleX = canvas.width / rect.width;
+    const scaleY = canvas.height / rect.height;
+    const x = Math.floor((event.clientX - rect.left) * scaleX);
+    const y = Math.floor((event.clientY - rect.top) * scaleY);
 
-    const imageData = ctx.getImageData(mouseX, mouseY, 1, 1);
+    const imageData = ctx.getImageData(x, y, 1, 1);
     const pixel = imageData.data;
 
-    const rgba = `rgba(${pixel[0]}, ${pixel[1]}, ${pixel[2]}, ${
-      pixel[3] / 255
-    })`;
+    const rgba = `rgba(${pixel[0]}, ${pixel[1]}, ${pixel[2]}, ${pixel[3] / 255})`;
     colorPreview.style.backgroundColor = rgba;
-
     colorPreview.style.left = `${event.pageX + 10}px`;
     colorPreview.style.top = `${event.pageY + 10}px`;
     colorPreview.style.display = "block";
@@ -93,8 +88,11 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!pickMode) return;
 
     const rect = canvas.getBoundingClientRect();
-    const x = event.clientX - rect.left;
-    const y = event.clientY - rect.top;
+    const scaleX = canvas.width / rect.width;
+    const scaleY = canvas.height / rect.height;
+    const x = Math.floor((event.clientX - rect.left) * scaleX);
+    const y = Math.floor((event.clientY - rect.top) * scaleY);
+
     const pixel = ctx.getImageData(x, y, 1, 1).data;
     const hex = rgbToHex(pixel[0], pixel[1], pixel[2]);
     handleColorClick(hex);
@@ -139,9 +137,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     try {
       const response = await fetch(
-        `https://laminate-api.onrender.com/api/laminates/similar?color=${encodeURIComponent(
-          hex
-        )}`
+        `https://laminate-api.onrender.com/api/laminates/similar?color=${encodeURIComponent(hex)}`
       );
 
       if (!response.ok) {
@@ -178,7 +174,9 @@ document.addEventListener("DOMContentLoaded", () => {
         <p><strong>Hex:</strong> ${laminate.hex_color}</p>
         <p><strong>Similarity:</strong> ${laminate.similarity}%</p>
         <div class="similarity-bar-wrapper">
-          <div class="similarity-bar" style="background-color: ${laminate.hex_color}; width: ${laminate.similarity}%;"><span class="similarity-label">${laminate.similarity}%</span></div>
+          <div class="similarity-bar" style="background-color: ${laminate.hex_color}; width: ${laminate.similarity}%;">
+            <span class="similarity-label">${laminate.similarity}%</span>
+          </div>
         </div>
       `;
 
