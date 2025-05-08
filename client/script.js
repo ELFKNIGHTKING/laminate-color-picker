@@ -9,9 +9,9 @@ document.addEventListener("DOMContentLoaded", () => {
   let pickMode = false;
 
   // Create the color preview box
-  const colorPreview = document.createElement('div');
-  colorPreview.id = 'colorPreview';
-  colorPreview.style.display = 'none';
+  const colorPreview = document.createElement("div");
+  colorPreview.id = "colorPreview";
+  colorPreview.style.display = "none";
   document.body.appendChild(colorPreview);
 
   imageInput.addEventListener("change", async (event) => {
@@ -19,10 +19,21 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!file) return;
 
     const img = new Image();
+
+    // Fix CORS issues when reading pixel data
+    img.crossOrigin = "Anonymous";
+
     img.onload = async () => {
+      // Set canvas size
       canvas.width = img.width;
       canvas.height = img.height;
+
+      // Clear canvas before drawing
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
       ctx.drawImage(img, 0, 0);
+
+      // Force canvas initialization to avoid transparency issues
+      ctx.getImageData(0, 0, 1, 1);
 
       const colorThief = new ColorThief();
       const dominantColors = colorThief.getPalette(img, 4);
@@ -38,6 +49,8 @@ document.addEventListener("DOMContentLoaded", () => {
         colorButtonsContainer.appendChild(btn);
       });
     };
+
+    // Load the image from the file input
     img.src = URL.createObjectURL(file);
   });
 
@@ -60,18 +73,20 @@ document.addEventListener("DOMContentLoaded", () => {
     const imageData = ctx.getImageData(mouseX, mouseY, 1, 1);
     const pixel = imageData.data;
 
-    const rgba = `rgba(${pixel[0]}, ${pixel[1]}, ${pixel[2]}, ${pixel[3] / 255})`;
+    const rgba = `rgba(${pixel[0]}, ${pixel[1]}, ${pixel[2]}, ${
+      pixel[3] / 255
+    })`;
     colorPreview.style.backgroundColor = rgba;
 
     colorPreview.style.left = `${event.pageX + 10}px`;
     colorPreview.style.top = `${event.pageY + 10}px`;
-    colorPreview.style.display = 'block';
+    colorPreview.style.display = "block";
   }
 
   canvas.addEventListener("mousemove", updateColorPreview);
 
   canvas.addEventListener("mouseleave", () => {
-    colorPreview.style.display = 'none';
+    colorPreview.style.display = "none";
   });
 
   canvas.addEventListener("click", function (event) {
@@ -85,10 +100,11 @@ document.addEventListener("DOMContentLoaded", () => {
     handleColorClick(hex);
 
     pickMode = false;
-    pickModeBtn.innerHTML = '<img src="images/pick me.png" alt="Pick Color" class="button-icon" />';
+    pickModeBtn.innerHTML =
+      '<img src="images/pick me.png" alt="Pick Color" class="button-icon" />';
     pickModeBtn.disabled = false;
     canvas.classList.remove("cursor-active");
-    colorPreview.style.display = 'none';
+    colorPreview.style.display = "none";
   });
 
   document.getElementById("imageInput").addEventListener("change", function () {
@@ -123,7 +139,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     try {
       const response = await fetch(
-        `https://laminate-api.onrender.com/api/laminates/similar?color=${encodeURIComponent(hex)}`
+        `https://laminate-api.onrender.com/api/laminates/similar?color=${encodeURIComponent(
+          hex
+        )}`
       );
 
       if (!response.ok) {
