@@ -2,8 +2,11 @@ document.addEventListener("DOMContentLoaded", () => {
   const imageInput = document.getElementById("imageInput");
   const canvas = document.getElementById("canvas");
   const ctx = canvas.getContext("2d");
+  const pickModeBtn = document.getElementById("enablePickMode");
   const colorButtonsContainer = document.getElementById("colorButtons");
   const resultsContainer = document.getElementById("results");
+
+  let pickMode = false;
 
   imageInput.addEventListener("change", async (event) => {
     const file = event.target.files[0];
@@ -32,13 +35,25 @@ document.addEventListener("DOMContentLoaded", () => {
     img.src = URL.createObjectURL(file);
   });
 
+  pickModeBtn.addEventListener("click", () => {
+    pickMode = true;
+    pickModeBtn.textContent = "Tap on image to pick a color";
+    pickModeBtn.disabled = true;
+  });
+
   canvas.addEventListener("click", function (event) {
+    if (!pickMode) return;
+
     const rect = canvas.getBoundingClientRect();
     const x = event.clientX - rect.left;
     const y = event.clientY - rect.top;
     const pixel = ctx.getImageData(x, y, 1, 1).data;
     const hex = rgbToHex(pixel[0], pixel[1], pixel[2]);
     handleColorClick(hex);
+
+    pickMode = false;
+    pickModeBtn.textContent = "Pick Color from Image";
+    pickModeBtn.disabled = false;
   });
 
   document.getElementById("imageInput").addEventListener("change", function () {
@@ -73,9 +88,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     try {
       const response = await fetch(
-        `https://laminate-api.onrender.com/api/laminates/similar?color=${encodeURIComponent(
-          hex
-        )}`
+        `https://laminate-api.onrender.com/api/laminates/similar?color=${encodeURIComponent(hex)}`
       );
 
       if (!response.ok) {
